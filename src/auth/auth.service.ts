@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { SignUpDto } from './dto/sign-up.dto';
 import * as bcrypt from 'bcrypt';
 import { UserService } from 'src/user/user.service';
@@ -18,7 +18,7 @@ export class AuthService {
   async signUp(signUpDto: SignUpDto): Promise<Tokens> {
     const isUserExist = await this.userService.find({ email: signUpDto.email });
     if (isUserExist) {
-      throw new Error('User with this email already exists');
+      throw new BadRequestException('User with this email already exists');
     }
     const passwordHash = await bcrypt.hash(
       signUpDto.password,
@@ -42,14 +42,14 @@ export class AuthService {
   async signIn(signInDto: SignInDto): Promise<Tokens> {
     const findUser = await this.userService.find({ email: signInDto.email });
     if (!findUser) {
-      throw new Error('User doesn`t exist');
+      throw new BadRequestException('User doesn`t exist');
     }
     const passwordCompare = await bcrypt.compare(
       signInDto.password,
       findUser.password,
     );
     if (!passwordCompare) {
-      throw new Error('Wrong password');
+      throw new BadRequestException('Wrong password');
     }
     const userTokens = await this.tokensService.generateTokens({
       userName: findUser.fullName,

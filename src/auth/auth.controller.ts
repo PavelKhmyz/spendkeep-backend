@@ -9,7 +9,7 @@ import {
 import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/sign-up.dto';
 import { SignInDto } from './dto/sign-in.dto';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard, CustomRequest } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -27,25 +27,25 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get('refresh')
-  refresh(@Request() req) {
+  refresh(@Request() req: CustomRequest) {
     return this.authService.refresh(req.token, req.user);
   }
 
   @UseGuards(AuthGuard)
   @Get('signOut')
-  signOut(@Request() req) {
+  signOut(@Request() req: CustomRequest) {
     return this.authService.signOut(req.user.sub);
   }
 
   @UseGuards(AuthGuard)
   @Get('deleteUser')
-  removeUser(@Request() req) {
+  removeUser(@Request() req: CustomRequest) {
     return this.authService.remove(req.user.sub);
   }
 
   @UseGuards(AuthGuard)
   @Get('user')
-  getUser(@Request() req) {
+  getUser(@Request() req: CustomRequest) {
     return req.user;
   }
 }

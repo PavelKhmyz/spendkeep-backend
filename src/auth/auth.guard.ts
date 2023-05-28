@@ -7,6 +7,16 @@ import {
 import { Request } from 'express';
 import { TokensService } from './tokens/tokens.service';
 
+export interface CustomRequest extends Request {
+  token: string;
+  user: {
+    userName: string;
+    sub: string;
+    iat: number;
+    exp: number;
+  };
+}
+
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(private tokensService: TokensService) {}
