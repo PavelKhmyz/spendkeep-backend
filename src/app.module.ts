@@ -1,18 +1,21 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
+import ConfigModule from './config/Config.module';
 import ServicesModule from './services/Services.module';
 import RepositoriesModule from './data/repositories/Repositories.module';
 import { RouterModule } from '@nestjs/core';
 import WebApiControllerModule from './controllers/WebApi/WebApiControllers.module';
+import ClientsModule from './clients/Clients.module';
+import LoggerMiddleware from './middleware/LoggerMiddleware';
+import UtilsModule from './utils/Utils.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    MongooseModule.forRoot(process.env.MONGO_URL, { dbName: 'nest' }),
+    ConfigModule,
     ServicesModule,
     RepositoriesModule,
     WebApiControllerModule,
+    ClientsModule,
+    UtilsModule,
     RouterModule.register([
       {
         path: 'web-api',
@@ -21,4 +24,8 @@ import WebApiControllerModule from './controllers/WebApi/WebApiControllers.modul
     ]),
   ],
 })
-export class AppModule {}
+export class AppModule {
+  public configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
