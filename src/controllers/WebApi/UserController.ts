@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Inject, Param, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Post, Put, ValidationPipe } from '@nestjs/common';
 import ServiceType from '../../services/ServiceType';
 import { IUserService } from '../../services/UserService';
 import { IsOptional, IsString, IsStrongPassword, IsUrl } from 'class-validator';
@@ -13,6 +13,28 @@ class CreateUserDto {
   @IsString()
   lastName: string;
 
+  @IsStrongPassword()
+  password: string;
+
+  @IsOptional()
+  @IsUrl()
+  avatarUrl?: string;
+}
+
+class UpdateUserDto {
+  @IsOptional()
+  @IsString()
+  email: string;
+
+  @IsOptional()
+  @IsString()
+  firstName: string;
+
+  @IsOptional()
+  @IsString()
+  lastName: string;
+
+  @IsOptional()
   @IsStrongPassword()
   password: string;
 
@@ -45,6 +67,14 @@ export default class UserController {
       password: params.password,
       avatarUrl: params.avatarUrl,
     });
+  }
+
+  @Put('/:id')
+  public async update(
+    @Param('id') id: string,
+    @Body(new ValidationPipe()) params: UpdateUserDto,
+  ) {
+    return this.userService.update(id, params);
   }
 
   @Delete('/:id')

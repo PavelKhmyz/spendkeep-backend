@@ -28,10 +28,18 @@ interface IFindParams {
   id?: string;
 }
 
+interface IUpdateParams {
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+  email?: string;
+}
+
 export interface IUserRepository {
   createOne(params: ICreateParams): Promise<IUserViewModel>;
   findOneBy(params: IFindParams): Promise<IUserViewModel | null>;
   deleteOneBy(params: IFindParams): Promise<void>;
+  updateOneBy(findParams: IFindParams, params: IUpdateParams): Promise<IUserViewModel>;
 }
 
 interface IUserRepositoryConfiguration {
