@@ -4,9 +4,11 @@ import { provideClass } from '../../helpers/ModuleHelpers';
 import RepositoryType from './RepositoryType';
 import TransactionManager from './TransactionManager';
 import UserRepository from './UserRepository';
+import DatabaseModule from '../Database.module';
 
 @Module({
   imports: [
+    DatabaseModule,
     ModelsModule,
   ],
   providers: [
