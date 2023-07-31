@@ -1,3 +1,3 @@
-export class UpdateOperationDto {
-  [key: string]: string | number;
-}
+// export class UpdateOperationDto {
+//   [key: string]: string | number;
+// }

@@ -1,12 +1,12 @@
-import { IsString } from 'class-validator';
+// import { IsString } from 'class-validator';
 
-export class TokenDto {
-  @IsString()
-  readonly accessToken: string;
+// export class TokenDto {
+//   @IsString()
+//   readonly accessToken: string;
 
-  @IsString()
-  readonly refreshToken: string;
+//   @IsString()
+//   readonly refreshToken: string;
 
-  @IsString()
-  readonly userId: string;
-}
+//   @IsString()
+//   readonly userId: string;
+// }
