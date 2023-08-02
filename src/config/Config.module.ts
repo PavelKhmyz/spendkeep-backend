@@ -28,6 +28,7 @@ const provideEnvironmentVariable = <ReturnType>(
     provideEnvironmentVariable(ConfigType.EmailUser, EnvironmentVariable.EmailUser),
     provideEnvironmentVariable(ConfigType.EmailPort, EnvironmentVariable.EmailPort, parseInt),
     provideEnvironmentVariable(ConfigType.EmailHost, EnvironmentVariable.EmailHost),
+    provideEnvironmentVariable(ConfigType.RedisUrl, EnvironmentVariable.RedisUrl),
   ],
   exports: [
     ConfigType.DatabaseUrl,
@@ -36,6 +37,7 @@ const provideEnvironmentVariable = <ReturnType>(
     ConfigType.EmailUser,
     ConfigType.EmailPort,
     ConfigType.EmailHost,
+    ConfigType.RedisUrl,
   ],
 })
 export default class ConfigModule { }
