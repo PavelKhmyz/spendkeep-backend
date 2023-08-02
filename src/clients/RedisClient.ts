@@ -22,11 +22,12 @@ export default class RedisClient implements IRedisClient {
   }
 
   protected createConnection() {
-    return createClient({url: this.url});
+    return createClient({ url: this.url });
   }
 
   public async create(key: string, value: string, expire?: number) {
     await this.connection.set(key, value, {EX: expire});
+    
     return this.find(key);
   }
 
