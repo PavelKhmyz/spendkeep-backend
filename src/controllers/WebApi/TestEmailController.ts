@@ -54,7 +54,6 @@ export default class TestEmailController {
   public async redisCreate(
     @Body(new ValidationPipe()) body: SendTestRedisDto
   ) {
-
     return await this.redisService.set(body.key, body.value, body.expireIn);
   }
 
@@ -65,11 +64,20 @@ export default class TestEmailController {
     return await this.redisService.getOne(key);
   }
 
+  // Post just for test
+  @Post('/getMany') 
+  public async getMany(
+    @Body(new ValidationPipe()) body: string[]
+  ) {
+    return await this.redisService.getMany(body);
+  }
+
   @Delete('/:key')
   public async redisRemove(
     @Param('key') key: string
   ) {
     await this.redisService.delete(key);
+
     return {};
   }
 }
