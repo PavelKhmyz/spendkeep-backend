@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Inject, Param, Post, ValidationPipe } fr
 import ServiceType from '../../services/ServiceType';
 import { IEmailService } from '../../services/EmailService';
 import { IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
-import { IRedisService } from 'src/services/RedisService';
+import { IRedisService } from '../../services/RedisService';
 
 class SendTestEmailDto {
   @IsEmail()
@@ -15,14 +15,22 @@ class SendTestEmailDto {
   text: string;
 }
 
-class SendTestRedisDto{
-  storedData: {
-    [key: string]: string;
-  };
+class ExpireInDto {
+  @IsString()
+  timeUnit: 'EX' | 'PX';
+  @IsNumber()
+  timeValue: number;
+}
+
+class SendTestRedisDto {
+  @IsString()
+  key: string;
+
+  @IsString()
+  value: string;
 
   @IsOptional()
-  @IsNumber()
-  expire: number;  
+  expireIn: ExpireInDto;
 }
 
 //Just to test email client
@@ -47,20 +55,21 @@ export default class TestEmailController {
     @Body(new ValidationPipe()) body: SendTestRedisDto
   ) {
 
-    return await this.redisService.create(Object.keys(body.storedData)[0], Object.values(body.storedData)[0], body.expire);
+    return await this.redisService.set(body.key, body.value, body.expireIn);
   }
 
   @Get('/:key')
   public async redisFind(
     @Param('key') key: string
   ) {
-    return await this.redisService.find(key);
+    return await this.redisService.getOne(key);
   }
 
   @Delete('/:key')
   public async redisRemove(
     @Param('key') key: string
   ) {
-    return await this.redisService.delete(key);
+    await this.redisService.delete(key);
+    return {};
   }
 }
