@@ -4,18 +4,17 @@ import { provideClass } from '../helpers/ModuleHelpers';
 import EmailClient from './EmailClient';
 import UtilsModule from '../utils/Utils.module';
 import ConfigModule from '../config/Config.module';
-import redisClient from './RedisClient';
+import provideRedisClient from './RedisClient';
 
 @Module({
   imports: [UtilsModule, ConfigModule],
   providers: [
     provideClass(ClientType.EmailClient, EmailClient),
-    redisClient,
+    provideRedisClient(),
   ],
   exports: [
     ClientType.EmailClient,
     ClientType.RedisClient,
-    redisClient,
   ],
 })
 export default class ClientsModule {}

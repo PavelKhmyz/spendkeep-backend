@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Inject, Param, Post, ValidationPipe } from '@nestjs/common';
 import ServiceType from '../../services/ServiceType';
 import { IEmailService } from '../../services/EmailService';
-import { IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
-import { IRedisService } from '../../services/RedisService';
+import { IsEmail, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IRedisService, RedisTimeUnit } from '../../services/RedisService';
 
 class SendTestEmailDto {
   @IsEmail()
@@ -16,8 +16,8 @@ class SendTestEmailDto {
 }
 
 class ExpireInDto {
-  @IsString()
-  timeUnit: 'EX' | 'PX';
+  @IsEnum(RedisTimeUnit)
+  timeUnit: RedisTimeUnit;
   @IsNumber()
   timeValue: number;
 }
@@ -54,14 +54,14 @@ export default class TestEmailController {
   public async redisCreate(
     @Body(new ValidationPipe()) body: SendTestRedisDto
   ) {
-    return await this.redisService.set(body.key, body.value, body.expireIn);
+    return this.redisService.set(body.key, body.value, body.expireIn);
   }
 
   @Get('/:key')
   public async redisFind(
     @Param('key') key: string
   ) {
-    return await this.redisService.getOne(key);
+    return this.redisService.getOne(key);
   }
 
   // Post just for test
@@ -69,7 +69,7 @@ export default class TestEmailController {
   public async getMany(
     @Body(new ValidationPipe()) body: string[]
   ) {
-    return await this.redisService.getMany(body);
+    return this.redisService.getMany(body);
   }
 
   @Delete('/:key')

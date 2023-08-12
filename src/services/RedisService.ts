@@ -1,9 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import ClientType from '../clients/ClientType';
-import { createClient } from 'redis';
+import { RedisClientType, SetOptions } from 'redis';
+
+export enum RedisTimeUnit {
+  Seconds = 'EX',
+  Milliseconds = 'PX',
+}
 
 interface IExpireIn {
-  timeUnit: 'EX' | 'PX';
+  timeUnit: RedisTimeUnit;
   timeValue: number;
 }
 
@@ -17,13 +22,13 @@ export interface IRedisService {
 @Injectable()
 export default class RedisService implements IRedisService {
   constructor(
-    @Inject(ClientType.RedisClient) private readonly redisClient: ReturnType<typeof createClient>,
-  ) {
-    this.redisClient.connect();
-  }
+    @Inject(ClientType.RedisClient) private readonly redisClient: RedisClientType,
+  ) {}
 
   public async set(key: string, value: string, expire?: IExpireIn): Promise<string> {
-    await this.redisClient.set(key, value, expire ? {[expire.timeUnit]: expire.timeValue} : {KEEPTTL: true});
+    const expireQuery: SetOptions = expire ? { [expire.timeUnit]: expire.timeValue } : { KEEPTTL: true };
+
+    await this.redisClient.set(key, value, expireQuery);
 
     return this.getOne(key);
   }
@@ -33,10 +38,10 @@ export default class RedisService implements IRedisService {
   }
 
   public async getOne(key: string): Promise<string> {
-    return await this.redisClient.get(key);
+    return this.redisClient.get(key);
   }
 
   public async getMany(key: string[]): Promise<string[]> {
-    return await this.redisClient.MGET(key);
+    return this.redisClient.MGET(key);
   }
 }

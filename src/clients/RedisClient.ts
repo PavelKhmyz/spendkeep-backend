@@ -1,16 +1,17 @@
-import { Provider } from '@nestjs/common';
 import ClientType from './ClientType';
 import { createClient } from 'redis';
 import ConfigType from 'src/config/ConfigType';
 
-const redisClient: Provider<ReturnType<typeof createClient>> =  {
+const provideRedisClient = () =>  ({
   provide: ClientType.RedisClient,
   useFactory: (redisUrl: string) => {
-    const client = createClient({url: redisUrl});
+    const client = createClient({ url: redisUrl });
+
+    client.connect();
 
     return client;
   },
   inject: [ConfigType.RedisUrl],
-};
+});
 
-export default redisClient;
+export default provideRedisClient;
