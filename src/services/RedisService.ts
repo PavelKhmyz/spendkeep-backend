@@ -13,7 +13,7 @@ interface IExpireIn {
 }
 
 export interface IRedisService {
-  set(key: string, value: string, expire?: IExpireIn): Promise<string>;
+  set(key: string, value: string, expire?: IExpireIn): Promise<void>;
   delete(key: string): Promise<void>
   getOne(key: string): Promise<string>;
   getMany(key: string[]): Promise<string[]>
@@ -25,12 +25,10 @@ export default class RedisService implements IRedisService {
     @Inject(ClientType.RedisClient) private readonly redisClient: RedisClientType,
   ) {}
 
-  public async set(key: string, value: string, expire?: IExpireIn): Promise<string> {
+  public async set(key: string, value: string, expire?: IExpireIn): Promise<void> {
     const expireQuery: SetOptions = expire ? { [expire.timeUnit]: expire.timeValue } : { KEEPTTL: true };
 
     await this.redisClient.set(key, value, expireQuery);
-
-    return this.getOne(key);
   }
   
   public async delete(key: string): Promise<void> {

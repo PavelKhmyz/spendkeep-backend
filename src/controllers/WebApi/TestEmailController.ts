@@ -18,6 +18,7 @@ class SendTestEmailDto {
 class ExpireInDto {
   @IsEnum(RedisTimeUnit)
   timeUnit: RedisTimeUnit;
+
   @IsNumber()
   timeValue: number;
 }
@@ -54,7 +55,9 @@ export default class TestEmailController {
   public async redisCreate(
     @Body(new ValidationPipe()) body: SendTestRedisDto
   ) {
-    return this.redisService.set(body.key, body.value, body.expireIn);
+    await this.redisService.set(body.key, body.value, body.expireIn);
+
+    return {};
   }
 
   @Get('/:key')
