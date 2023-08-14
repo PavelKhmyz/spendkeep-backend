@@ -1,6 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IUserRepository, IUserViewModel } from '../data/repositories/UserRepository';
 import RepositoryType from '../data/repositories/RepositoryType';
+import { UserStatus } from 'src/data/models/User';
+import ServiceType from './ServiceType';
+import { IAccountService } from './AccountService';
 
 export type IUserData = Omit<IUserViewModel, 'password'>;
 
@@ -18,6 +21,10 @@ interface IUpdateUserParams {
   password?: string;
   email?: string;
   avatarUrl?: string;
+  account?: string;
+  isOwner?: boolean;
+  isEmailVerified?: boolean;
+  status?: UserStatus;
 }
 
 export interface IUserService {
@@ -31,10 +38,13 @@ export interface IUserService {
 export class UserService implements IUserService {
   constructor(
     @Inject(RepositoryType.UserRepository) private readonly userRepository: IUserRepository,
+    @Inject(ServiceType.AccountService) private readonly accountService: IAccountService,
   ){}
 
   public async create(params: ICreateUserParams): Promise<IUserData> {
-    const user = await this.userRepository.createOne(params);
+    const { id } = await this.accountService.create();
+
+    const user = await this.userRepository.createOne({ ...params, account: id});
 
     return this.mapUserViewModel(user);
   }

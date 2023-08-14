@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import ModelName from '../models/enums/ModelName';
-import { User } from '../models/User';
+import { User, UserStatus } from '../models/User';
 import { FilterQuery, Model } from 'mongoose';
 import MongoRepository from './MongoRepository';
 import { ObjectId } from 'mongodb';
@@ -13,6 +13,10 @@ export interface IUserViewModel {
   email: string;
   createdAt: Date;
   updatedAt: Date;
+  accountId: string;
+  isOwner: boolean;
+  isEmailVerified: boolean;
+  status: UserStatus;
   avatarUrl?: string;
   password?: string;
 }
@@ -21,6 +25,7 @@ interface ICreateParams {
   firstName: string;
   lastName: string;
   password: string;
+  account: string;
   email: string;
 }
 
@@ -33,6 +38,10 @@ interface IUpdateParams {
   lastName?: string;
   password?: string;
   email?: string;
+  account?: string;
+  isOwner?: boolean;
+  isEmailVerified?: boolean;
+  status?: UserStatus;
 }
 
 export interface IUserRepository {
@@ -46,6 +55,7 @@ interface IUserRepositoryConfiguration {
   viewModel: IUserViewModel;
   createParams: ICreateParams;
   findParams: IFindParams;
+  updateParams: IUpdateParams;
 }
 
 @Injectable()
@@ -76,6 +86,10 @@ export default class UserRepository extends MongoRepository<
       lastName: document.lastName,
       password: document.password,
       email: document.email,
+      isEmailVerified: document.isEmailVerified,
+      isOwner: document.isOwner,
+      status: document.status,
+      accountId: document.account.toString(),
       avatarUrl: document.avatarUrl,
       createdAt: document.createdAt,
       updatedAt: document.updatedAt,
