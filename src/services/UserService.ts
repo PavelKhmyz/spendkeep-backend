@@ -2,8 +2,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IUserRepository, IUserViewModel } from '../data/repositories/UserRepository';
 import RepositoryType from '../data/repositories/RepositoryType';
 import { UserStatus } from 'src/data/models/User';
-import ServiceType from './ServiceType';
-import { IAccountService } from './AccountService';
 
 export type IUserData = Omit<IUserViewModel, 'password'>;
 
@@ -12,6 +10,7 @@ interface ICreateUserParams {
   lastName: string;
   password: string;
   email: string;
+  account: string;
   avatarUrl?: string;
 }
 
@@ -28,7 +27,7 @@ interface IUpdateUserParams {
 }
 
 export interface IUserService {
-  create(params: ICreateUserParams): Promise<IUserData>;
+  create(params: ICreateUserParams, sessionId?: string): Promise<IUserData>;
   find(id: string): Promise<IUserData>;
   update(id: string, params: IUpdateUserParams): Promise<IUserData>;
   delete(id: string): Promise<void>
@@ -38,13 +37,10 @@ export interface IUserService {
 export class UserService implements IUserService {
   constructor(
     @Inject(RepositoryType.UserRepository) private readonly userRepository: IUserRepository,
-    @Inject(ServiceType.AccountService) private readonly accountService: IAccountService,
   ){}
 
-  public async create(params: ICreateUserParams): Promise<IUserData> {
-    const { id } = await this.accountService.create();
-
-    const user = await this.userRepository.createOne({ ...params, account: id});
+  public async create(params: ICreateUserParams, sessionId?: string): Promise<IUserData> {
+    const user = await this.userRepository.createOne(params, sessionId);
 
     return this.mapUserViewModel(user);
   }

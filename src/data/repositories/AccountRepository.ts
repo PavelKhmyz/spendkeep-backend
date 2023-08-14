@@ -19,7 +19,7 @@ interface IFindParams {
 type ICreateParams = Record<string, never>
 
 export interface IAccountRepository {
-  createOne(params: ICreateParams): Promise<IAccountViewModel>;
+  createOne(params: ICreateParams, sessionId?: string): Promise<IAccountViewModel>;
   findOneBy(params: IFindParams): Promise<IAccountViewModel | null>;
 }
 

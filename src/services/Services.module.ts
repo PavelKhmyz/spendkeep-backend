@@ -7,6 +7,7 @@ import ClientsModule from '../clients/Clients.module';
 import EmailService from './EmailService';
 import RedisService from './RedisService';
 import { AccountService } from './AccountService';
+import { AccountRegistrationService } from './AccountRegistrationService';
 
 @Module({
   imports: [RepositoriesModule, ClientsModule],
@@ -15,12 +16,14 @@ import { AccountService } from './AccountService';
     provideClass(ServiceType.EmailService, EmailService),
     provideClass(ServiceType.RedisService, RedisService),
     provideClass(ServiceType.AccountService, AccountService),
+    provideClass(ServiceType.AccountRegistrationService, AccountRegistrationService),
   ],
   exports: [
     ServiceType.UserService,
     ServiceType.EmailService,
     ServiceType.RedisService,
     ServiceType.AccountService,
+    ServiceType.AccountRegistrationService,
   ],
 })
 export default class ServicesModule {}
