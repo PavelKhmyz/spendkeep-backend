@@ -3,6 +3,7 @@ import ServicesModule from '../../services/Services.module';
 import UserController from './UserController';
 import TestEmailController from './TestEmailController';
 import AccountController from './AccountController';
+import AccountRegistrationController from './AccountRegistrationController';
 
 @Module({
   imports: [ServicesModule],
@@ -10,6 +11,7 @@ import AccountController from './AccountController';
     UserController,
     TestEmailController,
     AccountController,
+    AccountRegistrationController,
   ],
   providers: [],
 })

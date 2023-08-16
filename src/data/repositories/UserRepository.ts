@@ -45,7 +45,7 @@ interface IUpdateParams {
 }
 
 export interface IUserRepository {
-  createOne(params: ICreateParams): Promise<IUserViewModel>;
+  createOne(params: ICreateParams, sessionId?: string): Promise<IUserViewModel>;
   findOneBy(params: IFindParams): Promise<IUserViewModel | null>;
   deleteOneBy(params: IFindParams): Promise<void>;
   updateOneBy(findParams: IFindParams, params: IUpdateParams): Promise<IUserViewModel>;
