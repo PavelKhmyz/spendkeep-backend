@@ -8,9 +8,10 @@ import EmailService from './EmailService';
 import RedisService from './RedisService';
 import { AccountService } from './AccountService';
 import { AccountRegistrationService } from './AccountRegistrationService';
+import UtilsModule from '../utils/Utils.module';
 
 @Module({
-  imports: [RepositoriesModule, ClientsModule],
+  imports: [RepositoriesModule, ClientsModule, UtilsModule],
   providers: [
     provideClass(ServiceType.UserService, UserService),
     provideClass(ServiceType.EmailService, EmailService),
