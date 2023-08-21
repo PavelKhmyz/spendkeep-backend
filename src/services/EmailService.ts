@@ -9,7 +9,7 @@ interface ISendTestEmailParams {
 }
 
 export interface IEmailService {
-  sendTestEmail(params: ISendTestEmailParams): Promise<void>;
+  send(params: ISendTestEmailParams): Promise<void>;
 }
 
 @Injectable()
@@ -18,7 +18,7 @@ export default class EmailService implements IEmailService {
     @Inject(ClientType.EmailClient) private readonly emailClient: IEmailClient,
   ) { }
 
-  public async sendTestEmail(params: ISendTestEmailParams) {
+  public async send(params: ISendTestEmailParams) {
     return this.emailClient.send(params);
   }
 }

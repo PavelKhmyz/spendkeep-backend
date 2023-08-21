@@ -4,6 +4,7 @@ const ServiceType = {
   RedisService: Symbol('RedisService'),
   AccountService: Symbol('AccountService'),
   AccountRegistrationService: Symbol('AccountRegistrationService'),
+  EmailVerificationService: Symbol('EmailVerificationService'),
 };
 
 export default ServiceType;

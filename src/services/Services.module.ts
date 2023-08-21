@@ -9,6 +9,7 @@ import RedisService from './RedisService';
 import { AccountService } from './AccountService';
 import { AccountRegistrationService } from './AccountRegistrationService';
 import UtilsModule from '../utils/Utils.module';
+import { EmailVerificationService } from './EmailVerificationService';
 
 @Module({
   imports: [RepositoriesModule, ClientsModule, UtilsModule],
@@ -18,6 +19,7 @@ import UtilsModule from '../utils/Utils.module';
     provideClass(ServiceType.RedisService, RedisService),
     provideClass(ServiceType.AccountService, AccountService),
     provideClass(ServiceType.AccountRegistrationService, AccountRegistrationService),
+    provideClass(ServiceType.EmailVerificationService, EmailVerificationService),
   ],
   exports: [
     ServiceType.UserService,
@@ -25,6 +27,7 @@ import UtilsModule from '../utils/Utils.module';
     ServiceType.RedisService,
     ServiceType.AccountService,
     ServiceType.AccountRegistrationService,
+    ServiceType.EmailVerificationService,
   ],
 })
 export default class ServicesModule {}

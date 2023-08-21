@@ -46,7 +46,7 @@ export default class TestEmailController {
   public async sendTestEmail(
     @Body(new ValidationPipe()) body: SendTestEmailDto,
   ) {
-    await this.emailService.sendTestEmail(body);
+    await this.emailService.send(body);
 
     return {};
   }

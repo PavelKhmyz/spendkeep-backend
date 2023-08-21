@@ -4,6 +4,7 @@ import UserController from './UserController';
 import TestEmailController from './TestEmailController';
 import AccountController from './AccountController';
 import AccountRegistrationController from './AccountRegistrationController';
+import EmailVerificationController from './EmailVerificationController';
 
 @Module({
   imports: [ServicesModule],
@@ -12,6 +13,7 @@ import AccountRegistrationController from './AccountRegistrationController';
     TestEmailController,
     AccountController,
     AccountRegistrationController,
+    EmailVerificationController,
   ],
   providers: [],
 })
