@@ -5,7 +5,9 @@ enum EnvironmentVariable {
   EmailUser = 'EmailUser',
   EmailPort = 'EmailPort',
   EmailHost = 'EmailHost',
-  RedisUrl = 'RedisUrl'
+  RedisUrl = 'RedisUrl',
+  CookieDomain = 'CookieDomain',
+  SessionSignSecret= 'SessionSignSecret'
 }
 
 export default EnvironmentVariable;
