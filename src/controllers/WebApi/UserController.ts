@@ -35,7 +35,7 @@ export default class UserController {
   public async findById(
     @Param('id') id: string,
   ) {
-    return this.userService.find(id);
+    return this.userService.find({ id });
   }
 
   @Put('/:id')

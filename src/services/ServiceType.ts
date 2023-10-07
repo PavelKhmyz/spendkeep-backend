@@ -5,6 +5,7 @@ const ServiceType = {
   AccountService: Symbol('AccountService'),
   AccountRegistrationService: Symbol('AccountRegistrationService'),
   EmailVerificationService: Symbol('EmailVerificationService'),
+  SessionService: Symbol('SessionService'),
 };
 
 export default ServiceType;

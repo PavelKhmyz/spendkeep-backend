@@ -26,9 +26,14 @@ interface IUpdateUserParams {
   status?: UserStatus;
 }
 
+interface IFindUserParams {
+  id?: string;
+  email?: string;
+}
+
 export interface IUserService {
   create(params: ICreateUserParams, sessionId?: string): Promise<IUserData>;
-  find(id: string): Promise<IUserData>;
+  find(params: IFindUserParams): Promise<IUserData>;
   update(id: string, params: IUpdateUserParams): Promise<IUserData>;
   delete(id: string): Promise<void>
 }
@@ -45,8 +50,8 @@ export class UserService implements IUserService {
     return this.mapUserViewModel(user);
   }
 
-  public async find(id: string): Promise<IUserData> {
-    const user = await this.userRepository.findOneBy({ id });
+  public async find(params: IFindUserParams): Promise<IUserData> {
+    const user = await this.userRepository.findOneBy(params);
 
     if (!user) {
       throw new Error('User not found');

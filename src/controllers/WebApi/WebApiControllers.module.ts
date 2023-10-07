@@ -8,6 +8,7 @@ import EmailVerificationController from './EmailVerificationController';
 import SessionMiddleware from 'src/middleware/SessionMiddleware';
 import ClientsModule from 'src/clients/Clients.module';
 import ConfigModule from 'src/config/Config.module';
+import SessionController from 'src/controllers/WebApi/SessionController';
 
 @Module({
   imports: [ServicesModule, ClientsModule, ConfigModule],
@@ -17,6 +18,7 @@ import ConfigModule from 'src/config/Config.module';
     AccountController,
     AccountRegistrationController,
     EmailVerificationController,
+    SessionController,
   ],
   providers: [],
 })
