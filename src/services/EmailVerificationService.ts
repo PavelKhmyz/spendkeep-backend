@@ -56,7 +56,7 @@ export class EmailVerificationService implements IEmailVerificationService {
     const compare = await this.bcriptHashUtils.compare(params.verificationCode, verificationHash);
 
     if (compare) {
-      await this.userService.update(userId, { isEmailVerified: true });
+      await this.userService.update({ id: userId }, { isEmailVerified: true });
     }
   }
 

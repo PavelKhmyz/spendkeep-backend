@@ -29,13 +29,14 @@ interface IUpdateUserParams {
 interface IFindUserParams {
   id?: string;
   email?: string;
+  accountId?: string;
 }
 
 export interface IUserService {
   create(params: ICreateUserParams, sessionId?: string): Promise<IUserData>;
   find(params: IFindUserParams): Promise<IUserData>;
-  update(id: string, params: IUpdateUserParams): Promise<IUserData>;
-  delete(id: string): Promise<void>
+  update(findParams: IFindUserParams, params: IUpdateUserParams): Promise<IUserData>;
+  delete(params: IFindUserParams): Promise<void>
 }
 
 @Injectable()
@@ -60,14 +61,14 @@ export class UserService implements IUserService {
     return this.mapUserViewModel(user);
   }
 
-  public async update(id: string, params: IUpdateUserParams ): Promise<IUserData> {
-    const user = await this.userRepository.updateOneBy({ id }, params);
+  public async update(findParams: IFindUserParams, params: IUpdateUserParams ): Promise<IUserData> {
+    const user = await this.userRepository.updateOneBy(findParams, params);
 
     return this.mapUserViewModel(user);
   }
 
-  public async delete(id: string): Promise<void> {
-    return this.userRepository.deleteOneBy({ id });
+  public async delete(params: IFindUserParams): Promise<void> {
+    return this.userRepository.deleteOneBy(params);
   }
 
   private mapUserViewModel(user: IUserViewModel): IUserData {

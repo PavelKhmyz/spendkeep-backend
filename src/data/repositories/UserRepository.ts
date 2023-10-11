@@ -32,6 +32,7 @@ interface ICreateParams {
 interface IFindParams {
   id?: string;
   email?: string;
+  accountId?: string;
 }
 
 interface IUpdateParams {
@@ -75,10 +76,12 @@ export default class UserRepository extends MongoRepository<
   protected getFindQuery(params: IFindParams): FilterQuery<User> {
     const idMatch = params.id ? { _id: new ObjectId(params.id) } : {};
     const emailMatch = params.email ? { email: params.email } : {};
+    const accountIdMatch = params.accountId ? { account: params.accountId } : {};
 
     return {
       ...idMatch,
       ...emailMatch,
+      ...accountIdMatch,
     };
   }
 

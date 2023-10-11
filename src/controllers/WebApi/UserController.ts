@@ -46,14 +46,14 @@ export default class UserController {
     @Param('id') id: string,
     @Body(new ValidationPipe()) params: UpdateUserDto,
   ) {
-    return this.userService.update(id, params);
+    return this.userService.update({ id }, params);
   }
 
   @Delete('/:id')
   public async deleteById(
     @Param('id') id: string,
   ) {
-    await this.userService.delete(id);
+    await this.userService.delete({ id });
 
     return {};
   }
