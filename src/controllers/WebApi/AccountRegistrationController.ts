@@ -21,14 +21,16 @@ class CreateAccountDto {
   avatarUrl?: string;
 }
 
-@Controller('/signUp')
+@Controller('/accounts')
 export default class AccountRegistrationController {
   constructor(
     @Inject(ServiceType.AccountRegistrationService) private readonly accountRegistrationService: IAccountRegistrationService,
   ) {}
 
   @Post('/')
-  public async register(@Body(new ValidationPipe()) params: CreateAccountDto) {
+  public async register(
+    @Body(new ValidationPipe()) params: CreateAccountDto,
+  ) {
     await this.accountRegistrationService.register(params);
 
     return {};

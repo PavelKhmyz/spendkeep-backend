@@ -9,6 +9,7 @@ import SessionMiddleware from 'src/middleware/SessionMiddleware';
 import ClientsModule from 'src/clients/Clients.module';
 import ConfigModule from 'src/config/Config.module';
 import SessionController from 'src/controllers/WebApi/SessionController';
+import SenderMiddleware from 'src/middleware/SenderMiddleware';
 
 @Module({
   imports: [ServicesModule, ClientsModule, ConfigModule],
@@ -20,10 +21,11 @@ import SessionController from 'src/controllers/WebApi/SessionController';
     EmailVerificationController,
     SessionController,
   ],
-  providers: [],
+  providers: [SenderMiddleware],
 })
 export default class WebApiControllerModule {
   public configure(consumer: MiddlewareConsumer): void {
     consumer.apply(SessionMiddleware).forRoutes('*');
+    consumer.apply(SenderMiddleware).exclude('web-api/session', 'web-api/accounts').forRoutes('*');
   }
 }

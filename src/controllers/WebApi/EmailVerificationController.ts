@@ -19,7 +19,7 @@ class VerifyEmailDto {
   verificationCode: string;
 }
 
-@Controller('/emailVerification')
+@Controller('/email-verification')
 export default class EmailVerificationController {
   constructor(
     @Inject(ServiceType.EmailVerificationService) private readonly emailVerificationService: IEmailVerificationService,
