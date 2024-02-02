@@ -66,9 +66,8 @@ export default class TestEmailController {
   ) {
     return this.redisService.getOne(key);
   }
-
-  // Post just for test
-  @Post('/getMany') 
+  
+  @Post('/get-many') 
   public async getMany(
     @Body(new ValidationPipe()) body: string[]
   ) {
