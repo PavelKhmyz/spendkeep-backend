@@ -1,7 +1,6 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import ServicesModule from '../../services/Services.module';
 import UserController from './UserController';
-import TestEmailController from './TestEmailController';
 import AccountController from './AccountController';
 import AccountRegistrationController from './AccountRegistrationController';
 import EmailVerificationController from './EmailVerificationController';
@@ -15,7 +14,6 @@ import SenderMiddleware from 'src/middleware/SenderMiddleware';
   imports: [ServicesModule, ClientsModule, ConfigModule],
   controllers: [
     UserController,
-    TestEmailController,
     AccountController,
     AccountRegistrationController,
     EmailVerificationController,
