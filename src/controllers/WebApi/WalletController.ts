@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Inject, Param, Post, Req, UseGuards, ValidationPipe } from '@nestjs/common';
-import { IsString } from 'class-validator';
-import { Request } from 'express';
-import { WebApiAuthGuard } from 'src/guards/WebApiAuthGuard';
+import { Body, Controller, Get, Inject, Param, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { WebApiUser } from 'src/decorators/WebApiUser';
+import { IBaseAuthorizationInfo, WebApiAuthGuard } from 'src/guards/WebApiAuthGuard';
 import ServiceType from 'src/services/ServiceType';
 import { IWalletService } from 'src/services/WalletService';
 
@@ -10,9 +10,18 @@ class WalletDto {
   name: string;
 }
 
-enum FindParam {
-  Account = 'account',
-  User = 'user'
+class UpdateWalletDto {
+  @IsOptional()
+  @IsString()
+  name: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isActive: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isPublic: boolean;
 }
 
 @Controller('wallet')
@@ -24,40 +33,49 @@ export default class WalletController {
 
   @Post('/')
   public async create(
-    @Req() request: Request,
+    @WebApiUser() user: IBaseAuthorizationInfo,
     @Body(new ValidationPipe()) params: WalletDto,
   ) {
-    const { userId, accountId} = request.session;
+    const { id, accountId } = user;
 
-    await this.walletService.create({
-      user: userId,
-      account: accountId,
+    return this.walletService.create({
+      userId: id,
       name: params.name,
-    });
-
-    return {};
+    }, accountId);
   }
 
-  @Get('/:id')
+  @Get('find/:id')
   public async find(
     @Param('id') id: string,
+    @WebApiUser() user: IBaseAuthorizationInfo,
   ) {
-    return this.walletService.find(id);
+    return this.walletService.findById(id, user.accountId);
   }
 
-  @Get('/find-many/:type')
-  public async findMany(
-    @Param('type') type: FindParam,
-    @Req() request: Request,
+  @Get('/user')
+  public async getManyByUser(
+    @WebApiUser() user: IBaseAuthorizationInfo,
   ) {
-    const { userId, accountId } = request.session;
+    return this.walletService.findMany({ userId: user.id }, user.accountId);
+  }
 
-    if (type === FindParam.Account) {
-      return this.walletService.findMany({ accountId });
-    }
+  @Get('/account')
+  public async getManyByAccount(
+    @WebApiUser() user: IBaseAuthorizationInfo,
+  ) {
+    return this.walletService.findMany({ isPublic: true }, user.accountId);
+  }
 
-    if (type === FindParam.User) {
-      return this.walletService.findMany({ userId });
-    }
+  @Put('/:id')
+  public async update(
+    @Param('id') id: string,
+    @Body(new ValidationPipe()) body: UpdateWalletDto,
+    @WebApiUser() user: IBaseAuthorizationInfo,
+  ) {
+    const findParams = { id };
+
+    const updateParams = { name: body.name, isActive: body.isActive, isPublic: body.isPublic};
+
+    return this.walletService.updateOne(findParams, updateParams, user.accountId);
   }
 }
