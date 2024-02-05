@@ -11,6 +11,7 @@ import { AccountRegistrationService } from './AccountRegistrationService';
 import UtilsModule from '../utils/Utils.module';
 import { EmailVerificationService } from './EmailVerificationService';
 import { SessionService } from './SessionService';
+import WalletService from './WalletService';
 
 @Module({
   imports: [RepositoriesModule, ClientsModule, UtilsModule],
@@ -22,6 +23,7 @@ import { SessionService } from './SessionService';
     provideClass(ServiceType.AccountRegistrationService, AccountRegistrationService),
     provideClass(ServiceType.EmailVerificationService, EmailVerificationService),
     provideClass(ServiceType.SessionService, SessionService),
+    provideClass(ServiceType.WalletService, WalletService),
   ],
   exports: [
     ServiceType.UserService,
@@ -31,6 +33,7 @@ import { SessionService } from './SessionService';
     ServiceType.AccountRegistrationService,
     ServiceType.EmailVerificationService,
     ServiceType.SessionService,
+    ServiceType.WalletService,
   ],
 })
 export default class ServicesModule {}

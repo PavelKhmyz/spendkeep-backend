@@ -1,7 +1,8 @@
 import { Body, Controller, Inject, Post, Req, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Inject, Post, Req, ValidationPipe } from '@nestjs/common';
 import { IsEmail, IsString } from 'class-validator';
-import { IEmailVerificationService } from '../../services/EmailVerificationService';
-import ServiceType from '../../services/ServiceType';
+import { IEmailVerificationService } from 'src/services/EmailVerificationService';
+import ServiceType from 'src/services/ServiceType';
 import { Request } from 'express';
 
 class SendVerificationCodeDto {
@@ -26,10 +27,15 @@ export default class EmailVerificationController {
   public async sendVerificationCode(
     @Body(new ValidationPipe()) body: SendVerificationCodeDto,
     @Req() request: Request,
+    @Body(new ValidationPipe()) body: SendVerificationCodeDto,
+    @Req() request: Request,
   ) {
     const { userId } = request.session;
 
-    await this.emailVerificationService.sendVerificationCode(body, userId);
+    await this.emailVerificationService.sendVerificationCode({
+      email: body.email,
+      userName: body.userName,
+    }, userId);
 
     return {};
   }
@@ -38,10 +44,14 @@ export default class EmailVerificationController {
   public async verifyEmail(
     @Body(new ValidationPipe()) body: VerifyEmailDto,
     @Req() request: Request,
+    @Body(new ValidationPipe()) body: VerifyEmailDto,
+    @Req() request: Request,
   ) {
     const { userId } = request.session;
 
-    await this.emailVerificationService.verifyEmail(body, userId);
+    await this.emailVerificationService.verifyEmail({
+      verificationCode: body.verificationCode,
+    }, userId);
 
     return {};
   }
