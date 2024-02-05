@@ -1,13 +1,23 @@
-import { Body, Controller, Get, Inject, Param, Post, Req, UseGuards, ValidationPipe } from '@nestjs/common';
-import { IsString } from 'class-validator';
-import { Request } from 'express';
-import { WebApiAuthGuard } from 'src/guards/WebApiAuthGuard';
+import { Body, Controller, Get, Inject, Param, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { WebApiUser } from 'src/decorators/WebApiUser';
+import { IBaseAuthorizationInfo, WebApiAuthGuard } from 'src/guards/WebApiAuthGuard';
 import ServiceType from 'src/services/ServiceType';
 import { IWalletService } from 'src/services/WalletService';
 
 class WalletDto {
   @IsString()
   name: string;
+}
+
+class UpdateWalletDto {
+  @IsOptional()
+  @IsString()
+  name: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isActive: boolean;
 }
 
 enum FindParam {
@@ -24,13 +34,13 @@ export default class WalletController {
 
   @Post('/')
   public async create(
-    @Req() request: Request,
+    @WebApiUser() user: IBaseAuthorizationInfo,
     @Body(new ValidationPipe()) params: WalletDto,
   ) {
-    const { userId, accountId} = request.session;
+    const { id, accountId} = user;
 
     await this.walletService.create({
-      user: userId,
+      user: id,
       account: accountId,
       name: params.name,
     });
@@ -48,16 +58,29 @@ export default class WalletController {
   @Get('/find-many/:type')
   public async findMany(
     @Param('type') type: FindParam,
-    @Req() request: Request,
+    @WebApiUser() user: IBaseAuthorizationInfo,
   ) {
-    const { userId, accountId } = request.session;
+    const { id, accountId } = user;
 
     if (type === FindParam.Account) {
       return this.walletService.findMany({ accountId });
     }
 
     if (type === FindParam.User) {
-      return this.walletService.findMany({ userId });
+      return this.walletService.findMany({ userId: id });
     }
+  }
+
+  @Put('/:id')
+  public async update(
+    @Param('id') id: string,
+    @Body(new ValidationPipe()) body: UpdateWalletDto,
+    @WebApiUser() user: IBaseAuthorizationInfo,
+  ) {
+    const updateQuery = { id, userId: user.id };
+
+    const updateParams = { name: body.name, isActive: body.isActive };
+
+    return this.walletService.update(updateQuery, updateParams);
   }
 }

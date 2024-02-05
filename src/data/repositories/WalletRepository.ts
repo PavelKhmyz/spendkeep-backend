@@ -11,6 +11,7 @@ export interface IWalletViewModel {
   accountId: string;
   name: string;
   userId: string;
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -32,6 +33,11 @@ interface ICreateParams {
   name: string;
 }
 
+interface IUpdateParams {
+  name?: string;
+  isActive?: boolean;
+}
+
 interface IWalletRepositoryConfiguration {
   viewModel: IWalletViewModel;
   createParams: ICreateParams;
@@ -41,7 +47,8 @@ interface IWalletRepositoryConfiguration {
 export interface IWalletRepository {
   createOne(params: ICreateParams, sessionId?: string): Promise<IWalletViewModel>;
   findOneBy(params: IFindParams): Promise<IWalletViewModel | null>;
-  findMany(params: IFindManyParams): Promise<IWalletViewModel[]>
+  findMany(params: IFindManyParams): Promise<IWalletViewModel[]>;
+  updateOneBy(findParams: IFindParams, params: IUpdateParams): Promise<IWalletViewModel>;
 }
 
 @Injectable()
@@ -59,8 +66,8 @@ Wallet
 
   protected getFindQuery(params: IFindParams): FilterQuery<Wallet> {
     const idMatch = params.id ? { _id: new ObjectId(params.id) } : {};
-    const userIdMatch = params.userId ? { user: new ObjectId(params.id) } : {};
-    const accountIdMatch = params.accountId ? { account: new ObjectId(params.id) } : {};
+    const userIdMatch = params.userId ? { user: params.userId } : {};
+    const accountIdMatch = params.accountId ? { account: params.accountId } : {};
 
     return {
       ...idMatch,
@@ -75,6 +82,7 @@ Wallet
       accountId: document.account.toString(),
       userId: document.user.toString(),
       name: document.name,
+      isActive: document.isActive,
       createdAt: document.createdAt,
       updatedAt: document.updatedAt,
     };

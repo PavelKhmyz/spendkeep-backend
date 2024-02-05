@@ -11,6 +11,9 @@ export class Wallet extends BaseModelWithAccount {
 
   @Prop({ required: true })
   name: string;
+
+  @Prop({ default: true })
+  isActive: boolean;
 }
 
 export const WalletSchema = SchemaFactory.createForClass(Wallet);
