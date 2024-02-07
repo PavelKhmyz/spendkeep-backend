@@ -2,14 +2,14 @@ import { Inject, Injectable } from '@nestjs/common';
 import ClientType from '../clients/ClientType';
 import { IEmailClient } from '../clients/EmailClient';
 
-interface ISendTestEmailParams {
+interface ISendEmailParams {
   to: string;
   subject: string;
   text: string;
 }
 
 export interface IEmailService {
-  send(params: ISendTestEmailParams): Promise<void>;
+  send(params: ISendEmailParams): Promise<void>;
 }
 
 @Injectable()
@@ -18,7 +18,7 @@ export default class EmailService implements IEmailService {
     @Inject(ClientType.EmailClient) private readonly emailClient: IEmailClient,
   ) { }
 
-  public async send(params: ISendTestEmailParams) {
+  public async send(params: ISendEmailParams) {
     return this.emailClient.send(params);
   }
 }

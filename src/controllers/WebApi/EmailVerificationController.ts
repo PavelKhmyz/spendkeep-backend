@@ -1,13 +1,10 @@
-import { Body, Controller, Inject, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Inject, Post, Req, ValidationPipe } from '@nestjs/common';
 import { IsEmail, IsString } from 'class-validator';
-import { IEmailVerificationService } from '../../services/EmailVerificationService';
-import ServiceType from '../../services/ServiceType';
-
-const MOCK_ID = 'qwerty123456'; //TODO:Change to info from sessions
+import { IEmailVerificationService } from 'src/services/EmailVerificationService';
+import ServiceType from 'src/services/ServiceType';
+import { Request } from 'express';
 
 class SendVerificationCodeDto {
-  @IsString()
-  id: string;
   @IsEmail()
   email: string;
   @IsString()
@@ -27,18 +24,29 @@ export default class EmailVerificationController {
 
   @Post('/')
   public async sendVerificationCode(
-    @Body(new ValidationPipe()) body: SendVerificationCodeDto
+    @Body(new ValidationPipe()) body: SendVerificationCodeDto,
+    @Req() request: Request,
   ) {
-    await this.emailVerificationService.sendVerificationCode(body, MOCK_ID);
+    const { userId } = request.session;
+
+    await this.emailVerificationService.sendVerificationCode({
+      email: body.email,
+      userName: body.userName,
+    }, userId);
 
     return {};
   }
 
   @Post('/verify')
   public async verifyEmail(
-    @Body(new ValidationPipe()) body: VerifyEmailDto
+    @Body(new ValidationPipe()) body: VerifyEmailDto,
+    @Req() request: Request,
   ) {
-    await this.emailVerificationService.verifyEmail(body, MOCK_ID);
+    const { userId } = request.session;
+
+    await this.emailVerificationService.verifyEmail({
+      verificationCode: body.verificationCode,
+    }, userId);
 
     return {};
   }
