@@ -25,7 +25,7 @@ interface ICreateParams {
   firstName: string;
   lastName: string;
   password: string;
-  account: string;
+  accountId: string;
   email: string;
 }
 
@@ -70,6 +70,12 @@ export default class UserRepository extends MongoRepository<
   ) {
     super({
       model: userModel,
+      transformCreateParamsToModel(params: ICreateParams) {
+        return {
+          ...params,
+          account: new ObjectId(params.accountId),
+        };
+      },
     });
   }
 

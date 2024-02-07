@@ -10,7 +10,7 @@ interface ICreateUserParams {
   lastName: string;
   password: string;
   email: string;
-  account: string;
+  accountId: string;
   avatarUrl?: string;
 }
 

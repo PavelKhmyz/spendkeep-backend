@@ -1,6 +1,7 @@
 enum ModelName {
   User = 'users',
-  Account = 'accounts'
+  Account = 'accounts',
+  Wallet = 'wallets',
 }
 
 export default ModelName;

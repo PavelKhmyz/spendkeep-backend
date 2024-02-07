@@ -33,7 +33,7 @@ export class AccountRegistrationService implements IAccountRegistrationService {
       const { id } = await this.accountService.create(sessionId);
       const passwordHash = await this.bcryptHash.hash(params.password);
 
-      return this.userService.create({ ...params, password: passwordHash, account: id }, sessionId);
+      return this.userService.create({ ...params, password: passwordHash, accountId: id }, sessionId);
     });
   }
 }

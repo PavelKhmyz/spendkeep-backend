@@ -6,6 +6,7 @@ import TransactionManager from './TransactionManager';
 import UserRepository from './UserRepository';
 import DatabaseModule from '../Database.module';
 import AccountRepository from './AccountRepository';
+import WalletRepository from './WalletRepository';
 
 @Module({
   imports: [
@@ -16,11 +17,13 @@ import AccountRepository from './AccountRepository';
     provideClass(RepositoryType.TransactionManager, TransactionManager),
     provideClass(RepositoryType.UserRepository, UserRepository),
     provideClass(RepositoryType.AccountRepository, AccountRepository),
+    provideClass(RepositoryType.WalletRepository, WalletRepository),
   ],
   exports: [
     RepositoryType.TransactionManager,
     RepositoryType.UserRepository,
     RepositoryType.AccountRepository,
+    RepositoryType.WalletRepository,
   ],
 })
 export default class RepositoriesModule {}

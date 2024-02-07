@@ -9,6 +9,7 @@ import ClientsModule from 'src/clients/Clients.module';
 import ConfigModule from 'src/config/Config.module';
 import SessionController from 'src/controllers/WebApi/SessionController';
 import SenderMiddleware from 'src/middleware/SenderMiddleware';
+import WalletController from './WalletController';
 
 @Module({
   imports: [ServicesModule, ClientsModule, ConfigModule],
@@ -18,6 +19,7 @@ import SenderMiddleware from 'src/middleware/SenderMiddleware';
     AccountRegistrationController,
     EmailVerificationController,
     SessionController,
+    WalletController,
   ],
   providers: [SenderMiddleware],
 })
