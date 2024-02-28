@@ -10,6 +10,7 @@ import ConfigModule from 'src/config/Config.module';
 import SessionController from 'src/controllers/WebApi/SessionController';
 import SenderMiddleware from 'src/middleware/SenderMiddleware';
 import WalletController from './WalletController';
+import CategoryController from './CategoryController';
 
 @Module({
   imports: [ServicesModule, ClientsModule, ConfigModule],
@@ -20,6 +21,7 @@ import WalletController from './WalletController';
     EmailVerificationController,
     SessionController,
     WalletController,
+    CategoryController,
   ],
   providers: [SenderMiddleware],
 })

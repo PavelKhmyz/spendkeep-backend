@@ -74,7 +74,11 @@ export default class WalletController {
   ) {
     const findParams = { id };
 
-    const updateParams = { name: body.name, isActive: body.isActive, isPublic: body.isPublic};
+    const updateParams = { 
+      name: body.name, 
+      isActive: body.isActive, 
+      isPublic: body.isPublic,
+    };
 
     return this.walletService.updateOne(findParams, updateParams, user.accountId);
   }

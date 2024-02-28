@@ -33,6 +33,7 @@ interface ICreateParams {
 interface IUpdateParams {
   name?: string;
   isActive?: boolean;
+  isPublic?: boolean;
 }
 
 interface IWalletRepositoryConfiguration {
