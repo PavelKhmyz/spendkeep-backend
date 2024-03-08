@@ -11,6 +11,7 @@ import SessionController from 'src/controllers/WebApi/SessionController';
 import SenderMiddleware from 'src/middleware/SenderMiddleware';
 import WalletController from './WalletController';
 import CategoryController from './CategoryController';
+import ExpenseController from './ExpenseController';
 
 @Module({
   imports: [ServicesModule, ClientsModule, ConfigModule],
@@ -22,6 +23,7 @@ import CategoryController from './CategoryController';
     SessionController,
     WalletController,
     CategoryController,
+    ExpenseController,
   ],
   providers: [SenderMiddleware],
 })
