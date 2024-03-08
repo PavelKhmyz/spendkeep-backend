@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import MongoRepository from './MongoRepository';
-import { Wallet } from 'src/data/models/Wallet';
 import { InjectModel } from '@nestjs/mongoose';
 import ModelName from 'src/data/models/enums/ModelName';
 import { FilterQuery, Model} from 'mongoose';
@@ -70,7 +69,7 @@ Category
     });
   }
 
-  protected getFindQuery(params: IFindParams): FilterQuery<Wallet> {
+  protected getFindQuery(params: IFindParams): FilterQuery<Category> {
     const idMatch = params.id ? { _id: new ObjectId(params.id) } : {};
     const accountMatch = params.accountId ? { account: new ObjectId(params.accountId) } : {};
 

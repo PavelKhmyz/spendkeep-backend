@@ -4,6 +4,7 @@ const RepositoryType = {
   AccountRepository: Symbol('AccountRepository'),
   WalletRepository: Symbol('WalletRepository'),
   CategoryRepository: Symbol('CategoryRepository'),
+  ExpenseRepository: Symbol('ExpenseRepository'),
 };
 
 export default RepositoryType;

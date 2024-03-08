@@ -8,6 +8,7 @@ import DatabaseModule from '../Database.module';
 import AccountRepository from './AccountRepository';
 import WalletRepository from './WalletRepository';
 import CategoryRepository from './CategoryRepository';
+import ExpenseRepository from './ExpenseRepository';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import CategoryRepository from './CategoryRepository';
     provideClass(RepositoryType.AccountRepository, AccountRepository),
     provideClass(RepositoryType.WalletRepository, WalletRepository),
     provideClass(RepositoryType.CategoryRepository, CategoryRepository),
+    provideClass(RepositoryType.ExpenseRepository, ExpenseRepository),
   ],
   exports: [
     RepositoryType.TransactionManager,
@@ -27,6 +29,7 @@ import CategoryRepository from './CategoryRepository';
     RepositoryType.AccountRepository,
     RepositoryType.WalletRepository,
     RepositoryType.CategoryRepository,
+    RepositoryType.ExpenseRepository,
   ],
 })
 export default class RepositoriesModule {}

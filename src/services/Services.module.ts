@@ -14,6 +14,7 @@ import { SessionService } from './SessionService';
 import WalletService from './WalletService';
 import CategoryValidationService from './CategoryValidationService';
 import CategoriesService from './CategoryService';
+import ExpenseService from './ExpenseService';
 
 @Module({
   imports: [RepositoriesModule, ClientsModule, UtilsModule],
@@ -28,6 +29,7 @@ import CategoriesService from './CategoryService';
     provideClass(ServiceType.WalletService, WalletService),
     provideClass(ServiceType.CategoryValidationService, CategoryValidationService),
     provideClass(ServiceType.CategoriesService, CategoriesService),
+    provideClass(ServiceType.ExpenseService, ExpenseService),
   ],
   exports: [
     ServiceType.UserService,
@@ -40,6 +42,7 @@ import CategoriesService from './CategoryService';
     ServiceType.WalletService,
     ServiceType.CategoryValidationService,
     ServiceType.CategoriesService,
+    ServiceType.ExpenseService,
   ],
 })
 export default class ServicesModule {}
